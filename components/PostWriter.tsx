@@ -540,9 +540,7 @@ export default function PostWriter({ embedded }: { embedded?: boolean }) {
         </div>
 
         {!embedded && (
-          <div className="w-[320px] shrink-0 hidden lg:block">
-            <SmartSuggestionCard suggestion={suggestion} />
-          </div>
+          <SmartSuggestionCard suggestion={suggestion} />
         )}
       </div>
     </div>

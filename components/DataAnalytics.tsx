@@ -606,9 +606,7 @@ B,10000,470,118,0.047,0.0118,5900`;
           )}
         </div>
 
-        <div className="w-[320px] shrink-0 hidden lg:block">
-          <SmartSuggestionCard suggestion={suggestion} />
-        </div>
+        <SmartSuggestionCard suggestion={suggestion} />
       </div>
     </div>
   );

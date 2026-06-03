@@ -45,9 +45,7 @@ export default function ContentCenter() {
           {tab === "writer" ? <PostWriter embedded /> : <AssetLibrary embedded />}
         </div>
 
-        <div className="w-[320px] shrink-0 hidden lg:block">
-          <SmartSuggestionCard suggestion={suggestion} />
-        </div>
+        <SmartSuggestionCard suggestion={suggestion} />
       </div>
     </div>
   );

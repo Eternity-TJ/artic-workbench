@@ -277,9 +277,7 @@ export default function CompetitorTracking() {
           )}
         </div>
 
-        <div className="w-[320px] shrink-0 hidden lg:block">
-          <SmartSuggestionCard suggestion={suggestion} />
-        </div>
+        <SmartSuggestionCard suggestion={suggestion} />
       </div>
 
       {/* ===== 对比视图（Modal） ===== */}

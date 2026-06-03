@@ -288,9 +288,7 @@ export default function Overview() {
           </div>
         </div>
 
-        <div className="w-[320px] shrink-0 hidden lg:block">
-          <SmartSuggestionCard suggestion={suggestion} />
-        </div>
+        <SmartSuggestionCard suggestion={suggestion} />
       </div>
     </div>
   );

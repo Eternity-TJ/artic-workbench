@@ -239,9 +239,7 @@ export default function UserCenter() {
           </div>
         </div>
 
-        <div className="w-[320px] shrink-0 hidden lg:block">
-          <SmartSuggestionCard suggestion={suggestion} />
-        </div>
+        <SmartSuggestionCard suggestion={suggestion} />
       </div>
 
       {/* ===== 邀请弹窗 ===== */}

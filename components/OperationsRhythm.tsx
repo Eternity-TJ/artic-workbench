@@ -443,9 +443,7 @@ export default function OperationsRhythm() {
         </div>
 
         {/* ===== 右侧建议卡片 ===== */}
-        <div className="w-[320px] shrink-0 hidden xl:block">
-          <SmartSuggestionCard suggestion={suggestion} />
-        </div>
+        <SmartSuggestionCard suggestion={suggestion} />
       </div>
 
       {/* ===== 创建弹窗 ===== */}
