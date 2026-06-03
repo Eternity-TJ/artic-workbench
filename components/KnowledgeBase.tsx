@@ -248,10 +248,7 @@ export default function KnowledgeBase() {
           )}
         </div>
 
-        {/* 右侧栏：筛选 + 建议 */}
-        <div className="w-[320px] shrink-0 hidden lg:block space-y-4">
-          <SmartSuggestionCard suggestion={suggestion} />
-        </div>
+        <SmartSuggestionCard suggestion={suggestion} />
       </div>
 
       {/* ===== 详情弹窗 ===== */}

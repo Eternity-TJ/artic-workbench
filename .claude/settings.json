@@ -26,7 +26,8 @@
       "Bash(curl -s https://api.anthropic.com/v1/messages -H \"x-api-key: sk-398a8fa4ca9448daa78ae12077057d39\" -H \"anthropic-version: 2023-06-01\" -H \"content-type: application/json\" -d '{\"model\":\"claude-haiku-4-5-20251001\",\"max_tokens\":1,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}')",
       "Bash(curl -s -o /dev/null -w \"status: %{http_code}\\\\n\" http://localhost:3000)",
       "Bash(ping -n 3 github.com)",
-      "Bash(curl -s -o /dev/null -w \"HTTPS: %{http_code}\\\\n\" https://github.com)"
+      "Bash(curl -s -o /dev/null -w \"HTTPS: %{http_code}\\\\n\" https://github.com)",
+      "Bash(grep -v \"^[0-9]*:import\\\\|^[0-9]*:export\\\\|^--$\")"
     ]
   }
 }
