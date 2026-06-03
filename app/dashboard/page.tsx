@@ -49,14 +49,36 @@ export default function DashboardPage() {
     setActiveMenu(key);
   }, []);
 
-  // API Key 守卫：无 Key 则重定向到首页
+  // API Key 守卫：校验存储的 Key 是否仍然有效
   useEffect(() => {
     const key = localStorage.getItem("artic-api-key");
     if (!key) {
       router.replace("/");
-    } else {
-      setApiChecked(true);
+      return;
     }
+    // 向 API 发一个最小请求验证 Key 有效性
+    fetch("https://api.deepseek.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "deepseek-chat",
+        max_tokens: 1,
+        messages: [{ role: "user", content: "hi" }],
+      }),
+    }).then(res => {
+      if (res.ok) {
+        setApiChecked(true);
+      } else {
+        localStorage.removeItem("artic-api-key");
+        router.replace("/");
+      }
+    }).catch(() => {
+      // 网络错误时不阻断，允许离线使用已保存的有效 Key
+      setApiChecked(true);
+    });
   }, [router]);
 
   // 监听 artic-nav 自定义事件（Overview 快速操作 + 联动）
