@@ -148,15 +148,22 @@ export default function UserCenter() {
           {/* 项目统计仪表盘 */}
           <div className="grid grid-cols-7 gap-2">
             {[
-              { label: "总活动", value: stats.totalCampaigns, sub: `${stats.activeCampaigns} 进行中`, color: "#6366F1" },
-              { label: "内容排期", value: stats.totalContent, sub: `${stats.publishedContent} 已发布`, color: "#10B981" },
-              { label: "竞品监控", value: stats.totalCompetitors, color: "#F59E0B" },
-              { label: "知识文章", value: stats.totalKnowledge, color: "#8B5CF6" },
-              { label: "数据集", value: stats.totalDatasets, color: "#EC4899" },
+              { label: "总活动", value: stats.totalCampaigns, sub: `${stats.activeCampaigns} 进行中`, color: "#6366F1", menu: "operations" as const },
+              { label: "内容排期", value: stats.totalContent, sub: `${stats.publishedContent} 已发布`, color: "#10B981", menu: "content-center" as const },
+              { label: "竞品监控", value: stats.totalCompetitors, color: "#F59E0B", menu: "competitor" as const },
+              { label: "知识文章", value: stats.totalKnowledge, color: "#8B5CF6", menu: "knowledge" as const },
+              { label: "数据集", value: stats.totalDatasets, color: "#EC4899", menu: "data" as const },
               { label: "团队成员", value: members.length, color: "#06B6D4" },
               { label: "在线成员", value: members.filter(m => m.status === "online").length, color: "#10B981" },
             ].map(s => (
-              <div key={s.label} className="smart-card text-center py-3">
+              <div key={s.label}
+                className={`smart-card text-center py-3 ${s.menu ? "cursor-pointer hover:border-primary/50" : ""}`}
+                onClick={() => {
+                  if (s.menu) {
+                    const event = new CustomEvent("artic-nav", { detail: { menu: s.menu } });
+                    window.dispatchEvent(event);
+                  }
+                }}>
                 <p className="text-lg font-bold" style={{ color: s.color }}>{s.value}</p>
                 <p className="text-[9px] font-medium" style={{ color: "var(--muted)" }}>{s.label}</p>
                 {s.sub && <p className="text-[8px] mt-0.5" style={{ color: "var(--muted)" }}>{s.sub}</p>}
