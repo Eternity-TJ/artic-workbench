@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #6366F1;
+  --primary-light: #A5B4FC;
+  --primary-dark: #4338CA;
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+  --border: #E2E8F0;
+  --muted: #94A3B8;
+  --text: #0F172A;
+  --text-secondary: #475569;
+  --bg: #F1F5F9;
+  --card-padding: 24px;
+  --card-radius: 12px;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 8px 24px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* 深色主题 */
+html.dark {
+  --primary: #818CF8;
+  --primary-light: #6366F1;
+  --primary-dark: #A5B4FC;
+  --surface: #1E293B;
+  --surface-alt: #334155;
+  --border: #475569;
+  --muted: #94A3B8;
+  --text: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --bg: #0F172A;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --card-shadow-hover: 0 8px 24px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
+}
+
+html.dark body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+html.dark .nav-item { color: #94A3B8; }
+html.dark .nav-item:hover { background: #334155; color: #E2E8F0; }
+html.dark .nav-item.active { background: #312E81; color: var(--primary); }
+html.dark .smart-card { background: var(--surface); border-color: var(--border); }
+html.dark .dev-panel { background: var(--surface-alt); border-color: var(--border); }
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    @apply font-sans antialiased;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+}
+
+@layer components {
+  .smart-card {
+    @apply rounded-card border border-border p-card;
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .smart-card:hover {
+    border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium cursor-pointer select-none;
+    transition: all 0.15s ease;
+    color: #64748B;
+  }
+  .nav-item:hover { background: #F1F5F9; color: #334155; }
+  .nav-item.active { background: #EEF2FF; color: var(--primary); }
+
+  .drawer-overlay {
+    @apply fixed inset-0 bg-black/30 z-40;
+    animation: fadeIn 0.2s ease-out;
+  }
+  .drawer-panel {
+    @apply fixed right-0 top-0 h-full w-[480px] max-w-[90vw] z-50 shadow-drawer;
+    background: var(--surface);
+    animation: slideInRight 0.25s ease-out;
+  }
+
+  .dev-panel {
+    @apply rounded-card border p-4 mb-4;
+    background: var(--surface-alt);
+    border-color: var(--border);
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  /* 表单控件 */
+  .input-field {
+    @apply w-full px-3 py-2 rounded-lg border text-sm outline-none;
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .input-field:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  }
+  .input-field::placeholder { color: var(--muted); }
+
+  .btn {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer select-none;
+    transition: all 0.15s ease;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .btn-outline:hover { background: var(--surface-alt); }
+  .btn-danger {
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FECACA;
+  }
+  .btn-danger:hover { background: #FEE2E2; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+  }
+  .btn-ghost:hover { color: var(--text); background: var(--surface-alt); }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ==================== 动画 ==================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-fade-in { animation: fadeIn 0.25s ease-out; }
+
+/* 毛玻璃效果 */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+html.dark .glass {
+  background: rgba(30, 41, 59, 0.7);
+}
