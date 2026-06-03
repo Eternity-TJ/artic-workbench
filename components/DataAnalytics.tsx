@@ -177,7 +177,7 @@ export default function DataAnalytics() {
   };
 
   /* ================================================================ */
-  /*  AB 测试 — 选两个数据集+各自列 → 逐行对比 → 统计摘要 → 提炼策略   */
+  /*  AB 测试 — 选两个数据集+各自列 → 逐行对比 → 统计摘要   */
   /* ================================================================ */
   const [abDS1, setAbDS1] = useState<number>(0);
   const [abDS2, setAbDS2] = useState<number>(0);
@@ -244,27 +244,6 @@ export default function DataAnalytics() {
   // Auto-compute when columns change
   useEffect(() => { if (abColA && abColB) runABComparison(); }, [abColA, abColB]);
 
-  const extractAsStrategy = () => {
-    if (!abStats || abRows.length === 0 || !dsAbA || !dsAbB) return;
-    const strategy = {
-      id: Date.now(),
-      name: `${dsAbA.name} vs ${dsAbB.name}`,
-      sourceExperiment: `${dsAbA.name} vs ${dsAbB.name} (${abColA} vs ${abColB})`,
-      lift: parseFloat(abStats.liftPct.toFixed(1)),
-      confidence: parseFloat((95 + Math.random() * 4.9).toFixed(1)), // 基于样本量估算
-      scenario: "",
-      tags: ["AB测试", abColA, abColB],
-      executionTemplate: `实验对比: ${dsAbA.name} (${abColA}) vs ${dsAbB.name} (${abColB})\nA 均值: ${abStats.meanA.toLocaleString(undefined, { maximumFractionDigits: 2 })}\nB 均值: ${abStats.meanB.toLocaleString(undefined, { maximumFractionDigits: 2 })}\n提升: ${abStats.liftPct > 0 ? "+" : ""}${abStats.liftPct.toFixed(1)}%\nB/A 比: ${abStats.ratioSum.toFixed(2)}x\n\n建议补充：具体执行步骤、适用场景、注意事项`,
-      status: "active" as const,
-      createdAt: new Date().toISOString(),
-      source: "ab-export" as const,
-    };
-    const existing: typeof strategy[] = JSON.parse(localStorage.getItem("artic-strategies") || "[]");
-    existing.unshift(strategy);
-    localStorage.setItem("artic-strategies", JSON.stringify(existing));
-    alert(`✅ 已提炼为策略「${strategy.name}」\n\n切换到「策略库」查看和管理。\n\n💡 建议在策略库中补充适用场景和执行模板细节。`);
-  };
-
   /* ==================== 渲染 ==================== */
 
   const tabs: { key: TabKey; label: string; icon: string }[] = [
@@ -293,7 +272,7 @@ export default function DataAnalytics() {
         )}
       </div>
       <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
-        拖拽导入 CSV/XLSX/DOCX → 数据对比 → AB 统计检验 → 提炼策略
+        拖拽导入 CSV/XLSX/DOCX → 数据对比 → AB 统计检验
       </p>
 
       <div className="flex gap-6">
@@ -534,11 +513,6 @@ B,10000,470,118,0.047,0.0118,5900`;
                         </h3>
                         <p className="text-[10px]" style={{ color: "var(--muted)" }}>{abRows.length} 行有效数据 · 显示前 100 行</p>
                       </div>
-                      <button className="btn btn-outline text-xs"
-                        style={{ borderColor: "#F59E0B", color: "#F59E0B" }}
-                        onClick={extractAsStrategy}>
-                        提炼为策略
-                      </button>
                     </div>
                     <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
                       <table className="w-full text-xs">

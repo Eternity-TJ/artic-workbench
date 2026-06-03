@@ -36,7 +36,13 @@ export default function Settings() {
   const [notifyEnabled, setNotifyEnabled] = useState(true);
   const [refreshInterval, setRefreshInterval] = useState<RefreshInterval>("60");
 
+  /* 守卫：跳过挂载时的 effect 触发 —— ThemeInitializer 已在 layout 层完成主题恢复，
+     Settings 的 effect 仅在用户主动切换主题/背景色时才执行，避免重复写入和竞争条件 */
+  const themeEffectMounted = useRef(false);
+
   useEffect(() => {
+    if (!themeEffectMounted.current) { themeEffectMounted.current = true; return; }
+
     const html = document.documentElement;
     const root = document.documentElement;
 
@@ -45,6 +51,7 @@ export default function Settings() {
       root.style.removeProperty("--bg");
       root.style.removeProperty("--surface");
       root.style.removeProperty("--surface-alt");
+      root.style.removeProperty("--border");
     } else if (theme === "custom") {
       html.classList.remove("dark");
       root.style.setProperty("--bg", customBg);
@@ -59,18 +66,8 @@ export default function Settings() {
       root.style.removeProperty("--border");
     }
     localStorage.setItem("artic-theme", theme);
-  }, [theme, customBg]);
-
-  // 自定义背景色变化时保存并同步更新
-  useEffect(() => {
-    if (theme === "custom") {
-      document.documentElement.style.setProperty("--bg", customBg);
-      document.documentElement.style.setProperty("--surface", `color-mix(in srgb, ${customBg} 25%, white)`);
-      document.documentElement.style.setProperty("--surface-alt", `color-mix(in srgb, ${customBg} 15%, white)`);
-      document.documentElement.style.setProperty("--border", `color-mix(in srgb, ${customBg} 30%, #E2E8F0)`);
-    }
     localStorage.setItem("artic-custom-bg", customBg);
-  }, [customBg, theme]);
+  }, [theme, customBg]);
 
   const handleResetPrefs = useCallback(() => {
     setTheme("light");
