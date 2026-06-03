@@ -7,8 +7,18 @@ interface Props {
   suggestion: SkillSuggestion | null;
 }
 
+function isCollapsed(): boolean {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem("artic-suggestion-collapsed") === "1";
+}
+
 export default function SmartSuggestionCard({ suggestion }: Props) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(isCollapsed);
+
+  const toggle = (v: boolean) => {
+    setCollapsed(v);
+    localStorage.setItem("artic-suggestion-collapsed", v ? "1" : "0");
+  };
 
   if (!suggestion) return null;
 
@@ -17,7 +27,7 @@ export default function SmartSuggestionCard({ suggestion }: Props) {
     return (
       <div className="shrink-0" style={{ width: 32 }}>
         <button
-          onClick={() => setCollapsed(false)}
+          onClick={() => toggle(false)}
           className="sticky top-4 flex flex-col items-center gap-1.5 py-3 rounded-l-lg shadow-lg transition-all z-20"
           style={{ background: "var(--primary)", color: "#fff" }}
           title="展开智能建议">
@@ -47,7 +57,7 @@ export default function SmartSuggestionCard({ suggestion }: Props) {
           智能建议 · {suggestion.category}
         </span>
         <button className="ml-auto w-6 h-6 rounded flex items-center justify-center hover:bg-surface-alt transition-colors"
-          onClick={() => setCollapsed(true)} title="收起建议（右缩）">
+          onClick={() => toggle(true)} title="收起建议（右缩）">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2" strokeLinecap="round">
             <polyline points="9 18 15 12 9 6" />
           </svg>

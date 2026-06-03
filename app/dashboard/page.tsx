@@ -49,35 +49,28 @@ export default function DashboardPage() {
     setActiveMenu(key);
   }, []);
 
-  // API Key 守卫：校验存储的 Key 是否仍然有效
+  // API Key 守卫：校验存储的 Key 是否仍然有效（带超时）
   useEffect(() => {
     const key = localStorage.getItem("artic-api-key");
     if (!key) {
       router.replace("/");
       return;
     }
-    // 向 API 发一个最小请求验证 Key 有效性
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => { ctrl.abort(); setApiChecked(true); }, 5000);
+
     fetch("https://api.deepseek.com/v1/chat/completions", {
       method: "POST",
-      headers: {
-        "Authorization": `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "deepseek-chat",
-        max_tokens: 1,
-        messages: [{ role: "user", content: "hi" }],
-      }),
+      headers: { "Authorization": `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ model: "deepseek-chat", max_tokens: 1, messages: [{ role: "user", content: "hi" }] }),
+      signal: ctrl.signal,
     }).then(res => {
-      if (res.ok) {
-        setApiChecked(true);
-      } else {
-        localStorage.removeItem("artic-api-key");
-        router.replace("/");
-      }
+      clearTimeout(timer);
+      if (res.ok) { setApiChecked(true); }
+      else { localStorage.removeItem("artic-api-key"); router.replace("/"); }
     }).catch(() => {
-      // 网络错误时不阻断，允许离线使用已保存的有效 Key
-      setApiChecked(true);
+      clearTimeout(timer);
+      setApiChecked(true); // 超时或网络错误：允许进入
     });
   }, [router]);
 
