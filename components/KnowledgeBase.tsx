@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import SmartSuggestionCard from "./SmartSuggestionCard";
+import AiPanel from "./AiPanel";
 import { getSkillForModule } from "@/lib/skillMapping";
+import { PROMPTS } from "@/lib/ai";
 
 /* ==================== 类型 ==================== */
 
@@ -268,6 +270,12 @@ export default function KnowledgeBase() {
                   {selectedArticle.pinned && <span>📌</span>}
                 </div>
                 <div className="flex items-center gap-2">
+                  <AiPanel
+                    title="文章摘要"
+                    buttonLabel="AI 摘要"
+                    buttonIcon="📝"
+                    {...PROMPTS.summarize(selectedArticle.title, selectedArticle.content)}
+                  />
                   <button className="btn btn-ghost text-xs px-2 py-1" onClick={() => handleTogglePin(selectedArticle.id)}>
                     {selectedArticle.pinned ? "取消置顶" : "📌 置顶"}
                   </button>

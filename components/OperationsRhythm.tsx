@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import SmartSuggestionCard from "./SmartSuggestionCard";
+import AiPanel from "./AiPanel";
 import { getSkillForModule } from "@/lib/skillMapping";
+import { PROMPTS } from "@/lib/ai";
 
 /* ==================== 类型 ==================== */
 
@@ -230,7 +232,18 @@ export default function OperationsRhythm() {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-xl font-bold mb-1" style={{ color: "var(--text)" }}>运营节奏</h2>
+      <div className="flex items-center justify-between mb-1">
+        <h2 className="text-xl font-bold" style={{ color: "var(--text)" }}>运营节奏</h2>
+        <AiPanel
+          title="月度运营节奏分析"
+          buttonLabel="AI 分析本月"
+          {...PROMPTS.rhythm(
+            campaigns.map(c => ({ name: c.name, status: STATUS_LABELS[c.status], startDate: c.startDate, endDate: c.endDate })),
+            events.map(e => ({ title: e.title, platform: e.platform, type: TYPE_CONFIG[e.type].label, status: CONTENT_STATUS[e.status].label, date: e.date })),
+            `${year}年${MONTHS[month]}`
+          )}
+        />
+      </div>
       <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>月度活动×内容日历 · 统一节奏管理</p>
 
       <div className="flex gap-6">

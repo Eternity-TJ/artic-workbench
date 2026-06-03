@@ -4,8 +4,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import * as XLSX from "xlsx";
 import mammoth from "mammoth";
 import SmartSuggestionCard from "./SmartSuggestionCard";
+import AiPanel from "./AiPanel";
 import { getSkillForModule } from "@/lib/skillMapping";
 import { inferColumnType, toNumber } from "@/lib/statistics";
+import { PROMPTS } from "@/lib/ai";
 
 /* ==================== 类型 ==================== */
 
@@ -273,7 +275,23 @@ export default function DataAnalytics() {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-xl font-bold mb-1" style={{ color: "var(--text)" }}>数据比对</h2>
+      <div className="flex items-center justify-between mb-1">
+        <h2 className="text-xl font-bold" style={{ color: "var(--text)" }}>数据比对</h2>
+        {abStats && dsAbA && dsAbB && (
+          <AiPanel
+            title="AB 测试结果解读"
+            buttonLabel="AI 解读结果"
+            {...PROMPTS.abTest({
+              meanA: abStats.meanA,
+              meanB: abStats.meanB,
+              liftPct: abStats.liftPct,
+              ratioSum: abStats.ratioSum,
+              sampleA: dsAbA ? dsAbA.rows.length : abRows.length,
+              sampleB: dsAbB ? dsAbB.rows.length : abRows.length,
+            })}
+          />
+        )}
+      </div>
       <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
         拖拽导入 CSV/XLSX/DOCX → 数据对比 → AB 统计检验 → 提炼策略
       </p>

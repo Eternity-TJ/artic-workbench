@@ -23,7 +23,8 @@
       "Bash(curl -s http://localhost:3002/dashboard)",
       "Bash(curl -s -o /dev/null -w '有效Key: %{http_code}\\\\n' -X POST https://api.anthropic.com/v1/messages -H 'x-api-key: sk-398a8fa4ca9448daa78ae12077057d39' -H 'anthropic-version: 2023-06-01' -H 'content-type: application/json' -d '{\"model\":\"claude-haiku-4-5-20251001\",\"max_tokens\":1,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}')",
       "Bash(curl -s -o /dev/null -w '无效Key: %{http_code}\\\\n' -X POST https://api.anthropic.com/v1/messages -H 'x-api-key: sk-fake-key-12345' -H 'anthropic-version: 2023-06-01' -H 'content-type: application/json' -d '{\"model\":\"claude-haiku-4-5-20251001\",\"max_tokens\":1,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}')",
-      "Bash(curl -s https://api.anthropic.com/v1/messages -H \"x-api-key: sk-398a8fa4ca9448daa78ae12077057d39\" -H \"anthropic-version: 2023-06-01\" -H \"content-type: application/json\" -d '{\"model\":\"claude-haiku-4-5-20251001\",\"max_tokens\":1,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}')"
+      "Bash(curl -s https://api.anthropic.com/v1/messages -H \"x-api-key: sk-398a8fa4ca9448daa78ae12077057d39\" -H \"anthropic-version: 2023-06-01\" -H \"content-type: application/json\" -d '{\"model\":\"claude-haiku-4-5-20251001\",\"max_tokens\":1,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}')",
+      "Bash(curl -s -o /dev/null -w \"status: %{http_code}\\\\n\" http://localhost:3000)"
     ]
   }
 }

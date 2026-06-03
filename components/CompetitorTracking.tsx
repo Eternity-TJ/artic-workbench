@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import SmartSuggestionCard from "./SmartSuggestionCard";
+import AiPanel from "./AiPanel";
 import { getSkillForModule } from "@/lib/skillMapping";
+import { PROMPTS } from "@/lib/ai";
 
 /* ==================== 类型 ==================== */
 
@@ -134,6 +136,19 @@ export default function CompetitorTracking() {
           <p className="text-sm" style={{ color: "var(--muted)" }}>结构化追踪 · 手动记录观察 · 并排对比分析</p>
         </div>
         <div className="flex items-center gap-2">
+          <AiPanel
+            title="竞品格局分析"
+            buttonLabel="AI 竞品洞察"
+            {...PROMPTS.competitor(
+              competitors.map(c => ({
+                name: c.name,
+                positioning: c.profile.positioning,
+                priceRange: c.profile.priceRange,
+                channels: c.profile.keyChannels,
+                style: c.profile.contentStyle,
+              }))
+            )}
+          />
           {compareIds.size >= 2 && (
             <button className="btn btn-outline text-xs" onClick={() => setShowCompare(true)}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12h4l3-9 6 18 3-9h4"/></svg>
