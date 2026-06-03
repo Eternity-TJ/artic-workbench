@@ -3,10 +3,11 @@
 import { useState } from "react";
 import PostWriter from "./PostWriter";
 import AssetLibrary from "./AssetLibrary";
+import PrdGenerator from "./PrdGenerator";
 import SmartSuggestionCard from "./SmartSuggestionCard";
 import { getSkillForModule } from "@/lib/skillMapping";
 
-type ContentTab = "writer" | "assets";
+type ContentTab = "writer" | "assets" | "prd";
 
 export default function ContentCenter() {
   const suggestion = getSkillForModule("content-center");
@@ -16,7 +17,7 @@ export default function ContentCenter() {
     <div className="animate-fade-in">
       <h2 className="text-xl font-bold mb-1" style={{ color: "var(--text)" }}>内容中心</h2>
       <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>
-        文案生成 + 素材管理 · 生成即保存，素材即复用
+        文案生成 + 素材管理 + PRD 生成 · 生成即保存，素材即复用
       </p>
 
       <div className="flex gap-6">
@@ -26,6 +27,7 @@ export default function ContentCenter() {
             {[
               { key: "writer" as const, label: "✏️ 文案生成", desc: "多平台·多语气·一键生成" },
               { key: "assets" as const, label: "📂 素材库", desc: "分类管理·搜索复用·关联活动" },
+              { key: "prd" as const, label: "📋 PRD 生成", desc: "AI 生成·结构化文档" },
             ].map((t) => (
               <button
                 key={t.key}
@@ -42,7 +44,9 @@ export default function ContentCenter() {
           </div>
 
           {/* Tab 内容 */}
-          {tab === "writer" ? <PostWriter embedded /> : <AssetLibrary embedded />}
+          {tab === "writer" && <PostWriter embedded />}
+          {tab === "assets" && <AssetLibrary embedded />}
+          {tab === "prd" && <PrdGenerator />}
         </div>
 
         <SmartSuggestionCard suggestion={suggestion} />

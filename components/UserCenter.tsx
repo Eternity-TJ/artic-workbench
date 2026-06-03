@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import SmartSuggestionCard from "./SmartSuggestionCard";
+import UserSegments from "./UserSegments";
 import { getSkillForModule } from "@/lib/skillMapping";
 
 /* ==================== 类型 ==================== */
@@ -237,6 +238,9 @@ export default function UserCenter() {
               )}
             </div>
           </div>
+
+          {/* 用户分层与画像 */}
+          <UserSegments />
         </div>
 
         <SmartSuggestionCard suggestion={suggestion} />
